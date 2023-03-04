@@ -1,6 +1,7 @@
 package frost.countermobile.forum.Service;
 
 import frost.countermobile.forum.Model.Category;
+import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,18 @@ public class CategoryService {
 
     @Autowired
     CategoryRepo categoryRepo;
+    @Autowired
+    TopicService topicService;
 
     public List<Category> getCategories() {
         return categoryRepo.findAll();
     }
 
-    public void createCategory(String title, String description) {
+    public Category createCategory(String title, String description) {
         Category category = new Category(title, description);
         category.setColor(colorForCategory());
         category.setSlug(slugTitle(title));
-        categoryRepo.save(category);
+        return categoryRepo.save(category);
     }
 
     public Category getCategoryBySlug(String slug) {
@@ -51,5 +54,15 @@ public class CategoryService {
         }
 
         return result;
+    }
+
+    public void deleteCategory(long categoryId) {
+        List<Topic> topicsInCategory = topicService.getTopicsByCategory(categoryId);
+        if (topicsInCategory.size() > 0) {
+            for(Topic t: topicsInCategory) {
+                topicService.deleteTopic(t.getId());
+            }
+        }
+        categoryRepo.deleteById(categoryId);
     }
 }

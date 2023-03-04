@@ -33,16 +33,6 @@ public class User {
         this.role = role;
         this.__v = 0;
         this.avatarUrl = "";
-        String[] categories = new String[]{};
-        Map<String, String> root = new HashMap<>();
-        root.put("0", "own_topics:write");
-        root.put("1", "own_topics:delete");
-        root.put("2", "own_replies:write");
-        root.put("3", "own_replies:delete");
-        root.put("4", "own_categories:write");
-        root.put("5", "own_categories:delete");
-        this.permissions.put("categories", categories);
-        this.permissions.put("root", root);
     }
 
     public Long getId() {

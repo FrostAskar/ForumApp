@@ -1,14 +1,13 @@
 package frost.countermobile.forum.Controller;
 
+import frost.countermobile.forum.Exception.UnathorizedDeleteException;
+import frost.countermobile.forum.Form.CategoryForm;
 import frost.countermobile.forum.Form.TopicForm;
 import frost.countermobile.forum.Model.Category;
 import frost.countermobile.forum.Model.Reply;
 import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
-import frost.countermobile.forum.Service.CategoryService;
-import frost.countermobile.forum.Service.ReplyService;
-import frost.countermobile.forum.Service.TopicService;
-import frost.countermobile.forum.Service.UserService;
+import frost.countermobile.forum.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,15 +22,18 @@ public class TopicController {
     TopicService topicService;
     ReplyService replyService;
     UserService userService;
+    PermissionService permissionService;
 
     public TopicController(CategoryService categoryService,
                            TopicService topicService,
                            ReplyService replyService,
-                           UserService userService) {
+                           UserService userService,
+                           PermissionService permissionService) {
         this.categoryService = categoryService;
         this.topicService = topicService;
         this.replyService = replyService;
         this.userService = userService;
+        this.permissionService = permissionService;
     }
 
     @GetMapping("/categories/{slug}/topics")
@@ -51,8 +53,9 @@ public class TopicController {
     public Topic createTopic(@RequestBody TopicForm topicForm,
                             HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
+        Category category = categoryService.getCategoryBySlug(topicForm.getCategory());
         Topic t = topicService.createTopic(topicForm.getTitle(), topicForm.getContent(),
-                                 topicForm.getCategory(), user);
+                                 category, user);
         //After saving a topic, update in order to make the _id same value as id
         t.set_id(t.getId());
         return t;
@@ -81,5 +84,24 @@ public class TopicController {
         map.put("_id", t.getId());
 
         return map;
+    }
+
+    @DeleteMapping("/topics/{id}")
+    @CrossOrigin
+    public Object deleteTopic(@PathVariable long id,
+                               HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        Topic topic = topicService.getTopicById(id);
+        try {
+            if (permissionService.verifyDeletePermission(user, "topic", topic)) {
+                topicService.deleteTopic(topic.getId());
+                return true;
+            }
+        } catch (UnathorizedDeleteException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return error;
+        }
+        return false;
     }
 }

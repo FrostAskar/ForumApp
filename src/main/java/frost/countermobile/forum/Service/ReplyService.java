@@ -6,6 +6,9 @@ import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.ReplyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -14,6 +17,8 @@ public class ReplyService {
 
     @Autowired
     ReplyRepo replyRepo;
+    @Autowired
+    PermissionService permissionService;
 
     public Reply createReply(String content, Topic topic, User user) {
         Reply reply = new Reply(content);
@@ -23,7 +28,20 @@ public class ReplyService {
     }
 
     public List<Reply> getRepliesByTopicId(long topicId) {
-        return replyRepo.findAllRepliesByTopic_id(topicId);
+        List<Reply> replies = replyRepo.findAllRepliesByTopic_id(topicId);
+        //Assign _id = id
+        for (Reply r: replies) {
+            r.set_id(r.getId());
+        }
+        return replies;
+    }
+
+    public Reply getReplyById(long id) {
+        return replyRepo.findById(id).get();
+    }
+
+    public void deleteReply(long id) {
+        replyRepo.deleteById(id);
     }
 
 }

@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface TopicRepo extends JpaRepository<Topic, Long> {
 
-    public List<Topic> findTopicByCategory_id(long category_id);
+    List<Topic> findTopicByCategory_id(long category_id);
 
 }
