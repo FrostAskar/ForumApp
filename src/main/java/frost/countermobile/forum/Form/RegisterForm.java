@@ -1,9 +1,6 @@
-package frost.countermobile.forum.DTO;
+package frost.countermobile.forum.Form;
 
-/*
-    DTO used to summarize all values used at registry and at login
- */
-public class Credential {
+public class RegisterForm {
 
     String email;
 
@@ -49,9 +46,5 @@ public class Credential {
 
     public String getModerateCategory() {
         return moderateCategory;
-    }
-
-    public void setModerateCategory(String moderateCategory) {
-        this.moderateCategory = moderateCategory;
     }
 }

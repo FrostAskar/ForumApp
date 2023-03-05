@@ -1,6 +1,5 @@
 package frost.countermobile.forum.Service;
 
-import frost.countermobile.forum.DTO.Credential;
 import frost.countermobile.forum.Exception.IncorrectLoginException;
 import frost.countermobile.forum.Exception.IncorrectPasswordException;
 import frost.countermobile.forum.Exception.IncorrectRegisterException;
@@ -31,13 +30,13 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public User createUserFromCredentials(Credential credentials) {
-        List<User> userCheck = userRepo.findByEmail(credentials.getEmail());
+    public User createUser(String name, String email, String pass, String role) {
+        List<User> userCheck = userRepo.findByEmail(email);
         if (userCheck.size() > 0) {
             throw new IncorrectRegisterException("This user already exists");
         }
-        String passEncoded = passwordEncoder.encodePass(credentials.getPassword());
-        return new User(credentials.getName(), passEncoded, credentials.getEmail(), "admin");
+        String passEncoded = passwordEncoder.encodePass(pass);
+        return new User(name, passEncoded, email, "admin");
     }
 
     public User autenticateUser(String email, String password) {

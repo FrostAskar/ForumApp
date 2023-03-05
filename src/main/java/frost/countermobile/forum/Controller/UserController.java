@@ -1,11 +1,11 @@
 package frost.countermobile.forum.Controller;
 
-import frost.countermobile.forum.DTO.Credential;
 import frost.countermobile.forum.Exception.IncorrectLoginException;
 import frost.countermobile.forum.Exception.IncorrectPasswordException;
 import frost.countermobile.forum.Exception.IncorrectRegisterException;
 import frost.countermobile.forum.Form.LoginForm;
 import frost.countermobile.forum.Form.PasswordForm;
+import frost.countermobile.forum.Form.RegisterForm;
 import frost.countermobile.forum.Form.UserForm;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Service.CategoryService;
@@ -14,7 +14,6 @@ import frost.countermobile.forum.Service.TokenService;
 import frost.countermobile.forum.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,11 +39,14 @@ public class UserController {
 
     @PostMapping("/register")
     @CrossOrigin
-    public Map<String, String> registerUser(@RequestBody Credential credentials,
+    public Map<String, String> registerUser(@RequestBody RegisterForm registerForm,
                                             HttpServletResponse resp) {
         Map<String, String> map = new HashMap<>();
         try {
-            User user = userService.createUserFromCredentials(credentials);
+            User user = userService.createUser(registerForm.getName(),
+                                               registerForm.getEmail(),
+                                               registerForm.getPassword(),
+                                               registerForm.getRole());
             userService.save(user);
             map.put("message", "done");
         } catch (IncorrectRegisterException e) {
