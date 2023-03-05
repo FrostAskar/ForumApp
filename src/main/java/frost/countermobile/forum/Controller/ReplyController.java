@@ -2,7 +2,6 @@ package frost.countermobile.forum.Controller;
 
 import frost.countermobile.forum.Exception.UnathorizedDeleteException;
 import frost.countermobile.forum.Form.ReplyForm;
-import frost.countermobile.forum.Model.Category;
 import frost.countermobile.forum.Model.Reply;
 import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
@@ -13,9 +12,7 @@ import frost.countermobile.forum.Service.TopicService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

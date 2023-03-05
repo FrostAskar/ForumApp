@@ -3,7 +3,6 @@ package frost.countermobile.forum.Model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 public class Reply {

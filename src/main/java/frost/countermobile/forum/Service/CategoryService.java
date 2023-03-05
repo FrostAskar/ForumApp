@@ -2,13 +2,11 @@ package frost.countermobile.forum.Service;
 
 import frost.countermobile.forum.Model.Category;
 import frost.countermobile.forum.Model.Topic;
-import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.CategoryRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Random;
 

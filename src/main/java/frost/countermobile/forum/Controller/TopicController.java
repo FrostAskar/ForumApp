@@ -1,7 +1,6 @@
 package frost.countermobile.forum.Controller;
 
 import frost.countermobile.forum.Exception.UnathorizedDeleteException;
-import frost.countermobile.forum.Form.CategoryForm;
 import frost.countermobile.forum.Form.TopicForm;
 import frost.countermobile.forum.Model.Category;
 import frost.countermobile.forum.Model.Reply;

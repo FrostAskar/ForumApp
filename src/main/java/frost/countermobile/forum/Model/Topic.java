@@ -1,12 +1,9 @@
 package frost.countermobile.forum.Model;
 
-import frost.countermobile.forum.Model.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Topic {
