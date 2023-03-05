@@ -4,6 +4,7 @@ import frost.countermobile.forum.Model.Category;
 import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.CategoryRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,10 @@ public class CategoryService {
             }
         }
         categoryRepo.deleteById(categoryId);
+    }
+
+    @Transactional
+    public void modifyCategory(String title, String description, long id) {
+        categoryRepo.updateCategory(title, description, id);
     }
 }

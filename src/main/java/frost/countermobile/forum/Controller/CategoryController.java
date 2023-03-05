@@ -61,4 +61,14 @@ public class CategoryController {
         }
         return true;
     }
+
+    @PutMapping("/categories/{slug}")
+    @CrossOrigin
+    public Category modifyCategory(@PathVariable String slug,
+                                   @RequestBody CategoryForm categoryForm) {
+        Category category = categoryService.getCategoryBySlug(slug);
+        categoryService.modifyCategory(categoryForm.getTitle(), categoryForm.getDescription(), category.getId());
+        category = categoryService.getCategoryBySlug(slug);
+        return category;
+    }
 }

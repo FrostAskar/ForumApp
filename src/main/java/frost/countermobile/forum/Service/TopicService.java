@@ -6,9 +6,11 @@ import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.ReplyRepo;
 import frost.countermobile.forum.Repository.TopicRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -45,5 +47,10 @@ public class TopicService {
             }
         }
         topicRepo.deleteById(topicId);
+    }
+
+    @Transactional
+    public void modifyTopic(String title, String content, Category category, long id) {
+        topicRepo.updateTopic(title, content, category, id);
     }
 }

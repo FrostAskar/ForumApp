@@ -4,12 +4,14 @@ import frost.countermobile.forum.Model.Reply;
 import frost.countermobile.forum.Model.Topic;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.ReplyRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -42,6 +44,11 @@ public class ReplyService {
 
     public void deleteReply(long id) {
         replyRepo.deleteById(id);
+    }
+
+    @Transactional
+    public void modifyReply(Reply reply, String content) {
+        replyRepo.updateReply(reply.getId(), content);
     }
 
 }

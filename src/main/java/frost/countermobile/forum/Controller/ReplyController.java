@@ -67,4 +67,13 @@ public class ReplyController {
         }
         return false;
     }
+
+    @PutMapping("/topics/{topicId}/replies/{replyId}")
+    @CrossOrigin
+    public Reply modifyReply(@RequestBody ReplyForm replyForm,
+                             @PathVariable long replyId) {
+        Reply reply = replyService.getReplyById(replyId);
+        replyService.modifyReply(reply, replyForm.getContent());
+        return replyService.getReplyById(replyId);
+    }
 }

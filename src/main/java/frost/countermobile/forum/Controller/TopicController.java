@@ -104,4 +104,14 @@ public class TopicController {
         }
         return false;
     }
+
+    @PutMapping("/topics/{id}")
+    @CrossOrigin
+    public Category modifyTopic(@RequestBody TopicForm topicForm,
+                            @PathVariable long id) {
+        Category category = categoryService.getCategoryBySlug(topicForm.getCategory());
+        topicService.modifyTopic(topicForm.getTitle(), topicForm.getContent(), category, id);
+        category = categoryService.getCategoryBySlug(topicForm.getCategory());
+        return category;
+    }
 }
