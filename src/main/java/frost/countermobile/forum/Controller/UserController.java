@@ -3,6 +3,7 @@ package frost.countermobile.forum.Controller;
 import frost.countermobile.forum.DTO.Credential;
 import frost.countermobile.forum.Exception.IncorrectLoginException;
 import frost.countermobile.forum.Exception.IncorrectPasswordException;
+import frost.countermobile.forum.Exception.IncorrectRegisterException;
 import frost.countermobile.forum.Form.LoginForm;
 import frost.countermobile.forum.Form.PasswordForm;
 import frost.countermobile.forum.Form.UserForm;
@@ -39,10 +40,18 @@ public class UserController {
 
     @PostMapping("/register")
     @CrossOrigin
-    public ResponseEntity<Void> registerUser(@RequestBody Credential credentials) {
-        User user = userService.createUserFromCredentials(credentials);
-        userService.save(user);
-        return ResponseEntity.ok().build();
+    public Map<String, String> registerUser(@RequestBody Credential credentials,
+                                            HttpServletResponse resp) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            User user = userService.createUserFromCredentials(credentials);
+            userService.save(user);
+            map.put("message", "done");
+        } catch (IncorrectRegisterException e) {
+            map.put("message", e.getMessage());
+            resp.setStatus(400);
+        }
+        return map;
     }
 
     @PostMapping("/login")
