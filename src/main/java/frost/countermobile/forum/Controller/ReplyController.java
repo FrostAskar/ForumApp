@@ -50,9 +50,8 @@ public class ReplyController {
 
     @DeleteMapping("/topics/{topicId}/replies/{replyId}")
     @CrossOrigin
-    public Object deleteReply(@PathVariable long topicId,
-                               @PathVariable long replyId,
-                               HttpServletRequest req) {
+    public Object deleteReply(@PathVariable long replyId,
+                              HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
         Reply reply = replyService.getReplyById(replyId);
         try {

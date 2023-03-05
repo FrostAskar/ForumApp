@@ -48,7 +48,7 @@ public class ReplyService {
 
     @Transactional
     public void modifyReply(Reply reply, String content) {
-        replyRepo.updateReply(reply.getId(), content);
+        replyRepo.updateReply(reply.getId(), content, Instant.now());
     }
 
 }

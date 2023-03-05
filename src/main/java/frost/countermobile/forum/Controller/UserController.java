@@ -2,7 +2,10 @@ package frost.countermobile.forum.Controller;
 
 import frost.countermobile.forum.DTO.Credential;
 import frost.countermobile.forum.Exception.IncorrectLoginException;
+import frost.countermobile.forum.Exception.IncorrectPasswordException;
 import frost.countermobile.forum.Form.LoginForm;
+import frost.countermobile.forum.Form.PasswordForm;
+import frost.countermobile.forum.Form.UserForm;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Service.CategoryService;
 import frost.countermobile.forum.Service.PermissionService;
@@ -67,5 +70,36 @@ public class UserController {
     public User getProfile(HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
         return user;
+    }
+
+    @PutMapping("/profile")
+    @CrossOrigin
+    public Map<String, Object> modifyUser(HttpServletRequest req,
+                                          @RequestBody UserForm userForm) {
+        Map<String, Object> map = new HashMap<>();
+        User user = (User) req.getAttribute("user");
+        user = userService.modifyUser(userForm.getName(), userForm.getEmail(), user.getId());
+        user = userService.generateUser(user);
+        String token = tokenService.createToken(user);
+        map.put("token", token);
+        map.put("user", user);
+        return map;
+    }
+
+    @PutMapping("/profile/password")
+    @CrossOrigin
+    public Object modifyPassword(HttpServletRequest req,
+                                 HttpServletResponse resp,
+                                 @RequestBody PasswordForm passwordForm) {
+        User user = (User) req.getAttribute("user");
+        try {
+            userService.modifyPassword(passwordForm.getCurrentPassword(), passwordForm.getNewPassword(), user);
+            return true;
+        } catch (IncorrectPasswordException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            resp.setStatus(e.getStatusCode());
+            return error;
+        }
     }
 }

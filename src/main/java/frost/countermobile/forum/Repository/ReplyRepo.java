@@ -15,7 +15,7 @@ public interface ReplyRepo extends JpaRepository<Reply, Long> {
     List<Reply> findAllRepliesByTopic_id(long topicId);
 
     @Modifying
-    @Query("update Reply set content = :content where id = :replyId")
-    void updateReply(long replyId, String content);
+    @Query("update Reply set content = :content, updatedAt = :now where id = :replyId")
+    void updateReply(long replyId, String content, Instant now);
 
 }

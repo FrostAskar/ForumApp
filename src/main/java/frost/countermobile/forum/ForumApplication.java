@@ -24,6 +24,8 @@ public class ForumApplication implements WebMvcConfigurer {
 				.addPathPatterns("/categories/**")
 				.addPathPatterns("/getprofile")
 				.addPathPatterns("/topics")
-				.addPathPatterns("/topics/**");
+				.addPathPatterns("/topics/**")
+				.addPathPatterns("/profile")
+				.addPathPatterns("/profile/**");
 	}
 }

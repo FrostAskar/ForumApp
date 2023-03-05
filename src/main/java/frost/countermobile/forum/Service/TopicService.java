@@ -51,6 +51,6 @@ public class TopicService {
 
     @Transactional
     public void modifyTopic(String title, String content, Category category, long id) {
-        topicRepo.updateTopic(title, content, category, id);
+        topicRepo.updateTopic(title, content, category, id, Instant.now());
     }
 }

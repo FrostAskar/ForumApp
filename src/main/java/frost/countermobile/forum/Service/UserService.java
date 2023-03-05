@@ -2,9 +2,11 @@ package frost.countermobile.forum.Service;
 
 import frost.countermobile.forum.DTO.Credential;
 import frost.countermobile.forum.Exception.IncorrectLoginException;
+import frost.countermobile.forum.Exception.IncorrectPasswordException;
 import frost.countermobile.forum.Model.User;
 import frost.countermobile.forum.Repository.UserRepo;
 import frost.countermobile.forum.Util.PasswordEncoder;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +73,22 @@ public class UserService {
         permissions.put("root", permissionService.setPermissions(u.getRole()));
         u.setPermissions(permissions);
         return u;
+    }
+
+    @Transactional
+    public User modifyUser(String name, String email, long id) {
+        userRepo.updateUser(name, email, id);
+        return userRepo.findById(id).get();
+    }
+
+    @Transactional
+    public void modifyPassword(String currentPassword, String newPassword, User user) {
+        if (currentPassword.equals(newPassword)){
+            throw new IncorrectPasswordException("Your new password cannot be the same as the old password", 400);
+        } else if (!passwordEncoder.encodePass(currentPassword).equals(user.getPassword())) {
+            throw new IncorrectPasswordException("Your current password is wrong!", 401);
+        }
+        String encodedNewPass = passwordEncoder.encodePass(newPassword);
+        userRepo.updatePassword(encodedNewPass, user.getId());
     }
 }

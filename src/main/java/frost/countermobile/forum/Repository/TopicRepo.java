@@ -17,6 +17,6 @@ public interface TopicRepo extends JpaRepository<Topic, Long> {
     List<Topic> findTopicByCategory_id(long category_id);
 
     @Modifying
-    @Query("update Topic set title = :title, content = :content, category = :category where id = :topicId")
-    void updateTopic(String title, String content, Category category, long topicId);
+    @Query("update Topic set title = :title, content = :content, category = :category, updatedAt = :now where id = :topicId")
+    void updateTopic(String title, String content, Category category, long topicId, Instant now);
 }
