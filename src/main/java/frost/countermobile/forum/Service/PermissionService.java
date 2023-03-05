@@ -23,6 +23,14 @@ public class PermissionService {
                     "categories:delete"
                 };
                 break;
+            case "moderator", "user":
+                result = new String[]{
+                    "own_topics:write",
+                    "own_topics:delete",
+                    "own_replies:write",
+                    "own_replies:delete"
+                };
+                break;
         }
         return result;
     }

@@ -51,19 +51,6 @@ public class UserService {
         return userRepo.findByEmail(email);
     }
 
-    public Map<String, Object> userToJSON(User user) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("AvatarUrl", user.getAvatarUrl());
-        result.put("Email", user.getEmail());
-        result.put("Id", user.getId());
-        result.put("name", user.getName());
-        result.put("permission", user.getPermissions());
-        result.put("role", user.getRole());
-        result.put("__v", 0);
-        result.put("_id", user.getId());
-        return result;
-    }
-
     public User generateUser(User user) {
         User u = user;
         u.set_id(user.getId());
